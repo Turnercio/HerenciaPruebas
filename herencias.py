@@ -12,6 +12,7 @@ class Producto:
         self.description = description
 
         self.validar_tipos()
+        self.validar_inputs()
 
     def __repr__(self):
         return f"ID: {self.identifyer}, p_name: {self.p_name}, Precio: {self.price}, Descripción: {self.description}"
@@ -29,6 +30,9 @@ class Producto:
         if not isinstance(self.description, str):
             raise TypeError("Description must be a String")
 
+
+
+
     def validar_inputs(self):
         if self.identifyer <= 0:
             raise TypeError("Identifyer number must be above 0")
@@ -42,7 +46,26 @@ class Producto:
         if not (len(self.description) < 20 or len(self.description) > 5):
             raise TypeError("Description must be between 5 and 20 characters")
 
+       
+
 class ProductoAlimenticio(Producto):
     def __init__(self, identifyer, p_name, price, description, expires):
         super().__init__(identifyer, p_name, price, description)
+        
         self.expires = expires
+
+        self.validar_expires()
+
+    def __repr__(self):
+        return f"ID: {self.identifyer}, p_name: {self.p_name}, Precio: {self.price}, Descripción: {self.description}, Expires: {self.expires}"
+    
+    def validar_expires(self):
+
+        if self.expires < date.today():
+            raise ValueError("La fecha no puede ser anterior al dia de hoy")  
+        
+class ProductoFresco(ProductoAlimenticio):
+    def __init__(self, identifyer, p_name, price, description, expires, origin):
+        super().__init__(identifyer, p_name, price, description, expires)         
+
+        self.origin = origin
